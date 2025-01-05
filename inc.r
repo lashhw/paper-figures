@@ -2,10 +2,10 @@ library(tidyverse)
 
 data <- tribble(
   ~category,                      ~            prec,  ~KIT,      ~BA,       ~BMW,      ~CLA,      ~HOU,      ~STR,      ~TEA,
-  "Number of Ray-Box Intersection Tests",      "FP32", 80021178,  93703925,  72695635,  121964051, 45383870,  91295721,  64115325,
-  "Number of Ray-Box Intersection Tests",      "FP16", 216869929, 157613286, 148872569, 155749309, 104859252, 114550687, 139065629,
-  "Number of Ray-Triangle Intersection Tests", "FP32", 12321920,  14875502,  24052696,  16363234,  10038904,  27057171,  21861707,
-  "Number of Ray-Triangle Intersection Tests", "FP16", 241888716, 120276941, 140252792, 55683089,  102925845, 65601058,  124571791
+  "(a)", "FP32", 80021178,  93703925,  72695635,  121964051, 45383870,  91295721,  64115325,
+  "(a)", "FP16", 216869929, 157613286, 148872569, 155749309, 104859252, 114550687, 139065629,
+  "(b)", "FP32", 12321920,  14875502,  24052696,  16363234,  10038904,  27057171,  21861707,
+  "(b)", "FP16", 241888716, 120276941, 140252792, 55683089,  102925845, 65601058,  124571791
 )
 
 data_long <- data |>
@@ -54,6 +54,7 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
   scale_y_continuous(
     expand=expansion(mult=c(0, 0.05)),
   ) +
-  theme_minimal(base_family="serif")
+  theme_minimal(base_family="serif") +
+  theme(legend.position="none")
 
 ggsave("trv-steps.pdf", width=7, height=2.5)
