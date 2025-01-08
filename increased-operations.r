@@ -1,4 +1,5 @@
 library(tidyverse)
+library(extrafont)
 
 data <- tribble(
   ~category,                                ~prec,  ~KIT,      ~BA,       ~BMW,      ~CLA,      ~HOU,      ~STR,      ~TEA,
@@ -49,18 +50,21 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
     fill="Precisions"
   ) +
   scale_fill_manual(
-    values = c("FP32"="#ffffb3", "FP16"="#bebada")
+    values = c("FP32"="#ffffb3", "FP16"="#bebada"),
+    guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(
     expand=expansion(mult=c(0, 0.05)),
   ) +
-  theme_minimal(base_family="serif") +
+  theme_minimal(base_family="Noto Serif") +
   theme(
-    legend.position="none",
-    axis.text.x = element_text(size=12, color="grey20"),
-    axis.text.y = element_text(size=12, color="black"),
-    axis.title = element_text(size=18, color="black"),
-    strip.text = element_text(size=14, color="black", face="bold"),
+    legend.position="top",
+    legend.key.size=unit(0.4, "cm"),
+    legend.text=element_text(size=11, color="grey20"),
+    axis.text.x=element_text(size=11, color="grey20"),
+    axis.text.y=element_text(size=11, color="grey20"),
+    axis.title=element_text(size=16, color="black"),
+    strip.text.x=element_text(size=12, color="black", face="bold")
   )
 
-ggsave("trv-steps.pdf", width=7, height=3.2)
+ggsave("trv-steps.pdf", width=7, height=3.5)
