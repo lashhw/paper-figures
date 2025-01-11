@@ -54,4 +54,4 @@ fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
     axis.title=element_text(size=7, color="black")
   )
 
-ggsave("mem.pdf", width=3, height=2)
+ggsave("mem.pdf", width=2.4, height=1.8)
