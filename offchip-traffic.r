@@ -2,28 +2,30 @@ library(tidyverse)
 library(extrafont)
 
 data <- tribble(
-       ~category,    ~KIT,     ~BA,    ~BMW,    ~CLA,   ~HOU,   ~STR,    ~TEA,
-  "Bounding Box", 2369544, 3908831, 1263463, 1451032, 387877, 553699, 3973370,
-      "Triangle",  756439, 1555584,  541289,  903982, 177387, 363432, 1907147
+   ~category,                                       ~type,      ~KIT,       ~BA,      ~BMW,       ~CLA,      ~HOU,      ~STR,      ~TEA,
+       "nbp",         "(a) Total Memory Accesses\n(Bytes)", 811278416, 955359350, 734093258, 1245992706, 439372298, 897508091, 663389863,
+  "Triangle",         "(a) Total Memory Accesses\n(Bytes)", 137632025, 164605296, 271490642,  183551714, 104263447, 274059931, 238551654,
+       "nbp", "(b) Offchip Memory Accesses\n(Cache Lines)",   2369544,   3908831,   1263463,    1451032,    387877,    553699,   3973370,
+  "Triangle", "(b) Offchip Memory Accesses\n(Cache Lines)",    756439,   1555584,    541289,     903982,    177387,    363432,   1907147,
 )
 
 data_long <- data |>
-  pivot_longer(cols=!category, names_to="scene", values_to="value")
+  pivot_longer(cols=!c(category, type), names_to="scene", values_to="value")
 
-bb_data <- data_long |>
-  filter(category == "Bounding Box")
+nbp_data <- data_long |>
+  filter(category == "nbp")
 
 triangle_data <- data_long |>
   filter(category == "Triangle")
 
-node_data <- bb_data |>
+bb_data <- nbp_data |>
+  mutate(category="Bounding Box", value=value*(48/56))
+
+node_data <- nbp_data |>
   mutate(category="Other", value=value*(8/56))
 
-bb_data <- bb_data |>
-  mutate(value=value*(48/56))
-
-data_long <- bind_rows(bb_data, triangle_data, node_data) |>
-  group_by(scene) |>
+data_long <- bind_rows(triangle_data, bb_data, node_data) |>
+  group_by(scene, type) |>
   mutate(percentage=value/sum(value)) |>
   ungroup() |>
   select(!value) |>
@@ -31,7 +33,7 @@ data_long <- bind_rows(bb_data, triangle_data, node_data) |>
   print()
 
 gmean_data <- data_long |>
-  group_by(category) |>
+  group_by(category, type) |>
   summarise(percentage=exp(mean(log(percentage)))) |>
   ungroup() |>
   mutate(scene="GMEAN") |>
@@ -43,12 +45,21 @@ data_combined <- bind_rows(data_long, gmean_data) |>
 fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
   geom_col(
     color="black",
-    width=0.6,
+    width=0.7,
     linewidth=0.3
   ) +
+  geom_text(
+    data = data_combined |> filter(scene == "GMEAN" & category != "Other"),
+    aes(label=scales::percent(percentage, accuracy=1)),
+    position=position_stack(),
+    size=3,
+    angle=45,
+    family="Noto Serif"
+  ) +
+  facet_wrap(~type) +
   labs(
     x="Scenes",
-    y="Percentage of Off-Chip\nMemory Traffic",
+    y="Percentage",
   ) +
   scale_fill_manual(
     values=c("Triangle"="#bebada", "Bounding Box"="#ffffb3", "Other"="#8dd3c7"),
@@ -61,11 +72,12 @@ fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
   theme_minimal(base_family="Noto Serif") +
   theme(
     legend.position="top",
-    legend.key.size=unit(0.3, "cm"),
-    legend.text=element_text(size=5, color="grey20"),
-    axis.text.x=element_text(size=5, color="grey20", angle=45),
-    axis.text.y=element_text(size=5, color="grey20"),
-    axis.title=element_text(size=7, color="black")
+    legend.key.size=unit(0.4, "cm"),
+    legend.text=element_text(size=11, color="grey20"),
+    axis.text.x=element_text(size=11, color="grey20", angle=45),
+    axis.text.y=element_text(size=11, color="grey20"),
+    axis.title=element_text(size=16, color="black"),
+    strip.text.x=element_text(size=12, color="black", face="bold")
   )
 
-ggsave("mem.pdf", width=2.4, height=1.8)
+ggsave("mem.pdf", width=7, height=3.5)

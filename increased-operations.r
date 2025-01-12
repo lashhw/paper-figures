@@ -40,7 +40,7 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
     data=data_ratio,
     aes(x=scene, y=annotation_y, label=sprintf("%.1fx", ratio)),
     hjust=0.3,
-    family="serif",
+    family="Noto Serif",
     inherit.aes=FALSE
   ) +
   facet_wrap(~category, scales="free_y") +
