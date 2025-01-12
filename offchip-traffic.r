@@ -8,12 +8,26 @@ data <- tribble(
 )
 
 data_long <- data |>
-  pivot_longer(cols=!category, names_to="scene", values_to="value") |>
+  pivot_longer(cols=!category, names_to="scene", values_to="value")
+
+bb_data <- data_long |>
+  filter(category == "Bounding Box")
+
+triangle_data <- data_long |>
+  filter(category == "Triangle")
+
+node_data <- bb_data |>
+  mutate(category="Other", value=value*(8/56))
+
+bb_data <- bb_data |>
+  mutate(value=value*(48/56))
+
+data_long <- bind_rows(bb_data, triangle_data, node_data) |>
   group_by(scene) |>
   mutate(percentage=value/sum(value)) |>
   ungroup() |>
   select(!value) |>
-  mutate(category=factor(category, levels=c("Triangle", "Bounding Box"))) |>
+  mutate(category=factor(category, levels=c("Triangle", "Bounding Box", "Other"))) |>
   print()
 
 gmean_data <- data_long |>
@@ -37,7 +51,7 @@ fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
     y="Percentage of Off-Chip\nMemory Traffic",
   ) +
   scale_fill_manual(
-    values=c("Triangle"="#bebada", "Bounding Box"="#ffffb3"),
+    values=c("Triangle"="#bebada", "Bounding Box"="#ffffb3", "Other"="#8dd3c7"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(
