@@ -46,11 +46,11 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
   facet_wrap(~category, scales="free_y") +
   labs(
     x="Scenes",
-    y="Normalized Operation Counts",
+    y="Normalized Operation\nCounts",
     fill="Precisions"
   ) +
   scale_fill_manual(
-    values = c("FP32"="#ffffb3", "FP16"="#bebada"),
+    values = c("FP32"="#f7f4f1", "FP16"="#c1a28f"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(

@@ -62,7 +62,7 @@ fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
     y="Percentage",
   ) +
   scale_fill_manual(
-    values=c("Triangle"="#bebada", "Bounding Box"="#ffffb3", "Other"="#8dd3c7"),
+    values=c("Triangle"="#c1a28f", "Bounding Box"="#dccbc0", "Other"="#f7f4f1"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(
