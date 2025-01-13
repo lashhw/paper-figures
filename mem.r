@@ -2,7 +2,7 @@ library(tidyverse)
 library(extrafont)
 
 data <- tribble(
-   ~category,                                       ~type,      ~KIT,       ~BA,      ~BMW,       ~CLA,      ~HOU,      ~STR,      ~TEA,
+   ~category,                                        ~type,      ~KIT,       ~BA,      ~BMW,       ~CLA,      ~HOU,      ~STR,      ~TEA,
        "nbp",         "(a) Total Memory Accesses\n(Bytes)", 811278416, 955359350, 734093258, 1245992706, 439372298, 897508091, 663389863,
   "Triangle",         "(a) Total Memory Accesses\n(Bytes)", 137632025, 164605296, 271490642,  183551714, 104263447, 274059931, 238551654,
        "nbp", "(b) Offchip Memory Accesses\n(Cache Lines)",   2369544,   3908831,   1263463,    1451032,    387877,    553699,   3973370,

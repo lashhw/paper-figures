@@ -2,11 +2,11 @@ library(tidyverse)
 library(extrafont)
 
 data <- tribble(
-  ~category,                                ~prec,  ~KIT,      ~BA,       ~BMW,      ~CLA,      ~HOU,      ~STR,      ~TEA,
-  "(a) Ray-Box Intersection Test"     ,     "FP32", 80021178,  93703925,  72695635,  121964051, 45383870,  91295721,  64115325,
-  "(a) Ray-Box Intersection Test"     ,     "FP16", 216869929, 157613286, 148872569, 155749309, 104859252, 114550687, 139065629,
-  "(b) Ray-Triangle Intersection Test",     "FP32", 12321920,  14875502,  24052696,  16363234,  10038904,  27057171,  21861707,
-  "(b) Ray-Triangle Intersection Test",     "FP16", 241888716, 120276941, 140252792, 55683089,  102925845, 65601058,  124571791
+                             ~category,  ~prec,      ~KIT,       ~BA,      ~BMW,      ~CLA,      ~HOU,      ~STR,      ~TEA,
+       "(a) Ray-Box Intersection Test", "FP32",  80021178,  93703925,  72695635, 121964051,  45383870,  91295721,  64115325,
+       "(a) Ray-Box Intersection Test", "FP16", 216869929, 157613286, 148872569, 155749309, 104859252, 114550687, 139065629,
+  "(b) Ray-Triangle Intersection Test", "FP32",  12321920,  14875502,  24052696,  16363234,  10038904,  27057171,  21861707,
+  "(b) Ray-Triangle Intersection Test", "FP16", 241888716, 120276941, 140252792,  55683089, 102925845,  65601058, 124571791,
 )
 
 data_long <- data |>
