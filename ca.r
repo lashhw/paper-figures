@@ -54,7 +54,7 @@ fig <- ggplot(data_long_combined) +
     aes(x=type, y=value, fill=category, pattern=type),
     position="stack",
     color="black",
-    width=0.8,
+    width=0.75,
     linewidth=0.3,
     pattern_density=0.01,
     pattern_spacing=0.12,
