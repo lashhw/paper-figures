@@ -37,13 +37,13 @@ data_long_combined <- bind_rows(data_long, data_long_mean) |>
 
 data_reduction <- data_long_combined |>
   group_by(type, scene) |>
-  summarise(total=1-sum(value_normalized), .groups="drop") |>
+  summarise(total=1-sum(value_normalized), y_location=sum(value), .groups="drop") |>
   filter(type == "AQB48") |>
   print()
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=type, y=value_normalized, fill=category, pattern=type),
+    aes(x=type, y=value, fill=category, pattern=type),
     position="stack",
     color="black",
     width=0.75,
@@ -54,15 +54,16 @@ fig <- ggplot(data_long_combined) +
   ) +
   geom_text(
     data=data_reduction,
-    aes(x=2, y=1.05-total, label=sprintf("-%.0f%%", total*100), fill=NULL),
+    aes(x=2, y=y_location, label=sprintf("-%.0f%%", total*100), fill=NULL),
     color="black",
     size=3,
-    family="Noto Serif"
+    family="Noto Serif",
+    vjust=-0.5,
   ) +
   facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
     x="Scenes",
-    y="Normalized Energy\nConsumption",
+    y="Energy Consumption (nJ)",
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "AQB48"="stripe"),
