@@ -40,6 +40,7 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
     data=data_ratio,
     aes(x=scene, y=annotation_y, label=sprintf("%.1fx", ratio)),
     hjust=0.3,
+    color="gray20",
     family="Noto Serif",
     inherit.aes=FALSE
   ) +
@@ -50,7 +51,7 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
     fill="Precisions"
   ) +
   scale_fill_manual(
-    values = c("FP32"="#f7f4f1", "FP16"="#c1a28f"),
+    values = c("FP32"="#e5d8d1", "FP16"="#b8947f"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(

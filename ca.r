@@ -98,3 +98,62 @@ fig <- ggplot(data_long_combined) +
   )
 
 ggsave("ca.pdf", width=6.9, height=4.2)
+
+data_l2_miss <- data_long_combined |>
+  mutate(value=value*64) |>
+  filter(level=="(b) L2", category=="miss_norm") |>
+  print()
+
+data_l2_miss_reduction <- data_l2_miss |>
+  pivot_wider(names_from=type, values_from=value) |>
+  mutate(ratio=(Baseline-AQB48)/Baseline) |>
+  print()
+
+fig <- ggplot(data_l2_miss) +
+  geom_col_pattern(
+    aes(x=type, y=value, fill=type, pattern=type),
+    position="stack",
+    color="black",
+    width=0.75,
+    linewidth=0.3,
+    pattern_density=0.01,
+    pattern_spacing=0.12,
+    pattern_color="#765541"
+  ) +
+  geom_text(
+    data=data_l2_miss_reduction,
+    aes(x=2, y=AQB48, label=sprintf("-%.0f%%", ratio*100)),
+    color="black",
+    size=3,
+    family="Noto Serif",
+    vjust=-0.5,
+  ) +
+  facet_wrap(~scene, nrow=1, strip.position="bottom") +
+  labs(
+    x="Scenes",
+    y="Off-Chip Memory\nAccesses (Bytes)"
+  ) +
+  scale_pattern_manual(
+    values=c("Baseline"="none", "AQB48"="stripe"),
+    guide="none"
+  ) +
+  scale_fill_manual(
+    values=c("Baseline"="#e5d8d1", "AQB48"="#b8947f"),
+    guide=guide_legend(title=NULL)
+  ) +
+  scale_y_continuous(expand=expansion(mult=c(0, 0))) +
+  theme_minimal(base_family="Noto Serif") +
+  theme(
+    legend.position="top",
+    legend.key.size=unit(0.4, "cm"),
+    legend.text=element_text(size=11, color="grey20"),
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(size=11, color="grey20"),
+    axis.title=element_text(size=16, color="black"),
+    strip.text.x=element_text(size=12, color="grey20"),
+    strip.text.y=element_text(size=16, color="black", face="bold"),
+    panel.spacing.x=unit(0, "cm"),
+    panel.spacing.y=unit(0.65, "cm")
+  )
+
+ggsave("traffic.pdf", width=6.5, height=3.2)
