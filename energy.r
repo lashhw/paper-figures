@@ -55,7 +55,7 @@ fig <- ggplot(data_long_combined) +
   geom_text(
     data=data_reduction,
     aes(x=2, y=y_location, label=sprintf("-%.0f%%", total*100), fill=NULL),
-    color="black",
+    color="grey20",
     size=3,
     family="Noto Serif",
     vjust=-0.5,
@@ -82,7 +82,7 @@ fig <- ggplot(data_long_combined) +
     axis.text.x=element_blank(),
     axis.text.y=element_text(size=11, color="grey20"),
     axis.title=element_text(size=16, color="black"),
-    strip.text.x=element_text(size=12, color="black"),
+    strip.text.x=element_text(size=12, color="grey20"),
     panel.spacing=unit(0,"cm")
   )
 
