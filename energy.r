@@ -15,23 +15,24 @@ data <- tribble(
 
 data_long <- data |>
   pivot_longer(cols=!c(category, type), names_to="scene", values_to="value") |>
-  group_by(scene) |>
-  mutate(value_normalized=value / sum(value[type == "Baseline"])) |>
-  ungroup() |>
   print()
 
 data_long_mean <- data_long |>
   group_by(type, category) |>
-  summarise(value_normalized=exp(mean(log(value_normalized))), .groups="drop") |>
-  mutate(scene = "GMEAN") |>
+  summarise(value=mean(value), .groups="drop") |>
+  mutate(scene="MEAN") |>
   print()
 
 data_long_combined <- bind_rows(data_long, data_long_mean) |>
+  group_by(scene) |>
+  mutate(value_normalized=value / sum(value[type == "Baseline"])) |>
+  ungroup() |>
   mutate(
     category=factor(category, levels=c("Compute", "SRAM", "Cache", "DRAM")),
     type=factor(type, levels=c("Baseline", "AQB48")),
     scene=factor(scene, levels=unique(scene))
-  )
+  ) |>
+  print()
 
 data_reduction <- data_long_combined |>
   group_by(type, scene) |>
