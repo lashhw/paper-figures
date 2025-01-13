@@ -1,5 +1,6 @@
 library(tidyverse)
 library(extrafont)
+library(ggpattern)
 
 data <- tribble(
   ~category,      ~type,     ~KIT,      ~BA,     ~BMW,     ~CLA,     ~HOU,     ~STR,     ~TEA,
@@ -40,24 +41,32 @@ data_reduction <- data_long_combined |>
   filter(type == "AQB48") |>
   print()
 
-fig <- ggplot(data_long_combined, aes(x=type, y=value_normalized, fill=category)) +
-  geom_col(
+fig <- ggplot(data_long_combined) +
+  geom_col_pattern(
+    aes(x=type, y=value_normalized, fill=category, pattern=type),
     position="stack",
     color="black",
-    width=0.7,
-    linewidth=0.3
+    width=0.75,
+    linewidth=0.3,
+    pattern_density=0.01,
+    pattern_spacing=0.12,
+    pattern_color="#765541"
   ) +
   geom_text(
     data=data_reduction,
-    aes(x=2, y=1.07-total, label=sprintf("-%.0f%%", total*100), fill=NULL),
+    aes(x=2, y=1.05-total, label=sprintf("-%.0f%%", total*100), fill=NULL),
     color="black",
     size=3,
     family="Noto Serif"
   ) +
-  facet_wrap(~scene, nrow=1) +
+  facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
     x="Scenes",
     y="Normalized Energy\nConsumption",
+  ) +
+  scale_pattern_manual(
+    values=c("Baseline"="none", "AQB48"="stripe"),
+    guide=guide_legend(title=NULL)
   ) +
   scale_fill_manual(
     values=c("Compute"="#dccbc0", "SRAM"="#cab09f", "Cache"="#b8947f", "DRAM"="#a6795e"),
@@ -69,10 +78,11 @@ fig <- ggplot(data_long_combined, aes(x=type, y=value_normalized, fill=category)
     legend.position="top",
     legend.key.size=unit(0.4, "cm"),
     legend.text=element_text(size=11, color="grey20"),
-    axis.text.x=element_text(size=11, color="grey20", angle=45),
+    axis.text.x=element_blank(),
     axis.text.y=element_text(size=11, color="grey20"),
     axis.title=element_text(size=16, color="black"),
-    strip.text.x=element_text(size=12, color="black")
+    strip.text.x=element_text(size=12, color="black"),
+    panel.spacing=unit(0,"cm")
   )
 
-ggsave("energy.pdf", width=7, height=3.5)
+ggsave("energy.pdf", width=6.5, height=3.2)
