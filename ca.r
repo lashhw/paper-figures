@@ -71,7 +71,7 @@ fig <- ggplot(data_long_combined) +
   facet_grid(level~scene, switch="x", scales="free_y") +
   labs(
     x="Scenes",
-    y="Cache Accesses (Lines)"
+    y="Cache Requests (Lines)"
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "AQB48"="stripe"),
