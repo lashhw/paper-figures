@@ -67,6 +67,7 @@ fig <- ggplot(data_long_combined) +
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "AQB48"="stripe"),
+    labels=c("Baseline"="Baseline-2", "AQB48"="AQB48-2"),
     guide=guide_legend(title=NULL)
   ) +
   scale_fill_manual(

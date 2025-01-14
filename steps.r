@@ -65,6 +65,7 @@ fig <- ggplot(data_long_combined) +
   ) +
   scale_fill_manual(
     values=c("Baseline"="#dccbc0", "AQB48"="#b8947f"),
+    labels=c("Baseline"="Baseline-2", "AQB48"="AQB48-2"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(expand=expansion(mult=c(0, 0.05))) +
