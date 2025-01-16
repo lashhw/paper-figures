@@ -14,45 +14,54 @@ data <- tribble(
    "(b) L2",    "miss",    "AQB48",   1437950,   2504173,    822061,    591892,    235620,    414975,   2099479,
 )
 
+l1d_total_baseline <- data |>
+  filter(level == "(a) L1D", type == "Baseline") |>
+  select(-level, -type) |>
+  pivot_longer(-category, names_to = "scene", values_to = "value") |>
+  group_by(scene) |>
+  summarise(l1d_total = sum(value)) |>
+  print()
+
 data_long <- data |>
-  pivot_longer(cols=!c(level, category, type), names_to="scene", values_to="value") |>
+  pivot_longer(cols=-c(level, category, type), names_to="scene", values_to="value") |>
+  left_join(l1d_total_baseline, by="scene") |>
+  mutate(value_normalized=value/l1d_total) |>
+  select(-value, -l1d_total) |>
   print()
 
 data_long_mean <- data_long |>
   group_by(level, category, type) |>
-  summarise(value=mean(value), .groups="drop") |>
+  summarise(value_normalized=mean(value_normalized), .groups="drop") |>
   mutate(scene="MEAN") |>
   print()
 
-data_long_combined <- bind_rows(data_long, data_long_mean) |>
-  pivot_wider(names_from=category, values_from=value) |>
-  group_by(level) |>
-  mutate(
-    hit_norm=hit,
-    miss_norm=miss
-  ) |>
-  ungroup() |>
-  select(level, type, scene, hit_norm, miss_norm) |>
-  pivot_longer(cols=!c(level, type, scene), names_to="category", values_to="value") |>
+base_data <- bind_rows(data_long, data_long_mean) |>
+  pivot_wider(names_from=category, values_from=value_normalized) |>
+  mutate(total=hit+miss)
+
+dram_data <- base_data |>
+  filter(level == "(b) L2") |>
+  mutate(level="(c) DRAM", total=miss, hit=NA, miss=NA)
+
+data_long_combined <- bind_rows(base_data, dram_data) |>
   mutate(
     level=factor(level, levels=unique(level)),
     type=factor(type, levels=unique(type)),
     scene=factor(scene, levels=unique(scene)),
-    category=factor(category, levels=c("hit_norm", "miss_norm"))
   ) |>
   print()
 
-data_reduction <- data_long_combined |>
-  pivot_wider(names_from=type, values_from=value) |>
-  group_by(level, scene) |>
-  summarise(Baseline=sum(Baseline), AQB48=sum(AQB48), .groups="drop") |>
-  mutate(ratio=(Baseline-AQB48)/Baseline) |>
-  print()
+#data_reduction <- data_long_combined |>
+#  pivot_wider(names_from=type, values_from=value_normalized) |>
+#  group_by(level, scene) |>
+#  summarise(Baseline=sum(Baseline), AQB48=sum(AQB48), .groups="drop") |>
+#  mutate(ratio=(Baseline-AQB48)/Baseline) |>
+#  print()
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=type, y=value, fill=category, pattern=type),
-    position="stack",
+    aes(x=scene, y=total, fill=type, pattern=type),
+    position="dodge",
     color="black",
     width=0.75,
     linewidth=0.3,
@@ -60,26 +69,25 @@ fig <- ggplot(data_long_combined) +
     pattern_spacing=0.12,
     pattern_color="#765541"
   ) +
-  geom_text(
-    data=data_reduction,
-    aes(x=2, y=AQB48, label=sprintf("-%.0f%%", ratio*100)),
-    color="black",
-    size=3,
-    family="Noto Serif",
-    vjust=-0.5,
-  ) +
-  facet_grid(level~scene, switch="x", scales="free_y") +
+  #geom_text(
+  #  data=data_reduction,
+  #  aes(x=2, y=AQB48, label=sprintf("-%.0f%%", ratio*100)),
+  #  color="black",
+  #  size=3,
+  #  family="Noto Serif",
+  #  vjust=-0.5,
+  #) +
+  facet_wrap(~level, nrow=3, scales="free_y") +
   labs(
     x="Scenes",
-    y="Cache Requests (Lines)"
+    y="Normalized Accesses"
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "AQB48"="stripe"),
     guide=guide_legend(title=NULL, order=1)
   ) +
   scale_fill_manual(
-    values=c("hit_norm"="#dccbc0", "miss_norm"="#b8947f"),
-    labels=c("hit_norm"="Cache Hit", "miss_norm"="Cache Miss"),
+    values=c("Baseline"="#dccbc0", "AQB48"="#b8947f"),
     guide=guide_legend(title=NULL, order=2)
   ) +
   scale_y_continuous(expand=expansion(mult=c(0, 0))) +
@@ -88,72 +96,9 @@ fig <- ggplot(data_long_combined) +
     legend.position="top",
     legend.key.size=unit(0.4, "cm"),
     legend.text=element_text(size=11, color="grey20"),
-    axis.text.x=element_blank(),
     axis.text.y=element_text(size=11, color="grey20"),
     axis.title=element_text(size=16, color="black"),
-    strip.text.x=element_text(size=12, color="grey20"),
-    strip.text.y=element_text(size=16, color="black", face="bold"),
-    panel.spacing.x=unit(0, "cm"),
-    panel.spacing.y=unit(0.65, "cm")
+    strip.text.x=element_text(size=12, color="black", face="bold")
   )
 
-ggsave("ca.pdf", width=6.9, height=4.2)
-
-data_l2_miss <- data_long_combined |>
-  mutate(value=value*64) |>
-  filter(level=="(b) L2", category=="miss_norm") |>
-  print()
-
-data_l2_miss_reduction <- data_l2_miss |>
-  pivot_wider(names_from=type, values_from=value) |>
-  mutate(ratio=(Baseline-AQB48)/Baseline) |>
-  print()
-
-fig <- ggplot(data_l2_miss) +
-  geom_col_pattern(
-    aes(x=type, y=value, fill=type, pattern=type),
-    position="stack",
-    color="black",
-    width=0.75,
-    linewidth=0.3,
-    pattern_density=0.01,
-    pattern_spacing=0.12,
-    pattern_color="#765541"
-  ) +
-  geom_text(
-    data=data_l2_miss_reduction,
-    aes(x=2, y=AQB48, label=sprintf("-%.0f%%", ratio*100)),
-    color="black",
-    size=3,
-    family="Noto Serif",
-    vjust=-0.5,
-  ) +
-  facet_wrap(~scene, nrow=1, strip.position="bottom") +
-  labs(
-    x="Scenes",
-    y="Off-Chip Memory\nAccesses (Bytes)"
-  ) +
-  scale_pattern_manual(
-    values=c("Baseline"="none", "AQB48"="stripe"),
-    guide="none"
-  ) +
-  scale_fill_manual(
-    values=c("Baseline"="#e5d8d1", "AQB48"="#b8947f"),
-    guide=guide_legend(title=NULL)
-  ) +
-  scale_y_continuous(expand=expansion(mult=c(0, 0))) +
-  theme_minimal(base_family="Noto Serif") +
-  theme(
-    legend.position="top",
-    legend.key.size=unit(0.4, "cm"),
-    legend.text=element_text(size=11, color="grey20"),
-    axis.text.x=element_blank(),
-    axis.text.y=element_text(size=11, color="grey20"),
-    axis.title=element_text(size=16, color="black"),
-    strip.text.x=element_text(size=12, color="grey20"),
-    strip.text.y=element_text(size=16, color="black", face="bold"),
-    panel.spacing.x=unit(0, "cm"),
-    panel.spacing.y=unit(0.65, "cm")
-  )
-
-ggsave("traffic.pdf", width=6.5, height=3.2)
+ggsave("ca.pdf", width=6.9, height=5)
