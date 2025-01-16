@@ -34,9 +34,9 @@ data_long <- bind_rows(triangle_data, bb_data, node_data) |>
 
 gmean_data <- data_long |>
   group_by(category, type) |>
-  summarise(percentage=exp(mean(log(percentage)))) |>
+  summarise(percentage=mean(percentage)) |>
   ungroup() |>
-  mutate(scene="GMEAN") |>
+  mutate(scene="MEAN") |>
   print()
 
 data_combined <- bind_rows(data_long, gmean_data) |>
@@ -49,7 +49,7 @@ fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
     linewidth=0.3
   ) +
   geom_text(
-    data = data_combined |> filter(scene == "GMEAN" & category != "Other"),
+    data = data_combined |> filter(scene == "MEAN" & category != "Other"),
     aes(label=scales::percent(percentage, accuracy=1)),
     position=position_stack(),
     size=3,
@@ -64,6 +64,7 @@ fig <- ggplot(data_combined, aes(x=scene, y=percentage, fill=category)) +
   ) +
   scale_fill_manual(
     values=c("Triangle"="#c1a28f", "Bounding Box"="#dccbc0", "Other"="#f7f4f1"),
+    breaks=c("Other", "Bounding Box", "Triangle"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(
