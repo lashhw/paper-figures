@@ -1,6 +1,7 @@
 library(tidyverse)
 library(extrafont)
 library(ggpattern)
+library(ggalluvial)
 
 data <- tribble(
        ~type, ~category,        ~TRV,      ~QBOX,        ~BOX,       ~TRIG,      ~OTHER, 
@@ -28,18 +29,26 @@ data_increment <- data_long |>
   print()
 
 fig <- ggplot(data_long) +
+  geom_flow(
+    aes(x=type, y=unit_area, alluvium=hwunit, fill=hwunit),
+    width=0.65,
+    linewidth=0.1,
+    alpha=0.8,
+    color="black",
+    curve_type="linear"
+  ) +
   geom_col_pattern(
-    aes(x=unit_area, y=type, fill=hwunit, pattern=type),
+    aes(x=type, y=unit_area, fill=hwunit, pattern=type),
     position="stack",
     color="black",
-    width=0.75,
+    width=0.65,
     linewidth=0.3,
     pattern_density=0.01,
     pattern_spacing=0.12,
     pattern_color="#765541"
   ) +
   geom_label(
-    aes(x=unit_area, y=type, label=round(count), fill=hwunit),
+    aes(x=type, y=unit_area, label=round(count), fill=hwunit),
     color="black",
     position=position_stack(vjust=0.5),
     size=3.6,
@@ -52,11 +61,12 @@ fig <- ggplot(data_long) +
   ) +
   geom_text(
     data=data_increment,
-    aes(x=AQB48, y="AQB48", label=sprintf("+%.0f%%", increment*100)),
+    aes(x="AQB48", y=AQB48, label=sprintf("+%.0f%%", increment*100)),
     color="grey20",
-    vjust=-0.5,
-    hjust=0.7,
+    vjust=-0.9,
     angle=-90,
+    size=4,
+    fontface="bold",
     family="Noto Serif",
     inherit.aes=FALSE
   ) +
@@ -69,20 +79,20 @@ fig <- ggplot(data_long) +
     guide=guide_legend(title=NULL),
     breaks=c("TRV", "QBOX", "BOX", "TRIG", "OTHER")
   ) +
-  scale_x_continuous(expand=expansion(mult=c(0, 0.07))) +
-  scale_y_discrete(labels=c("AQB48-2", "Baseline-2")) +
-  labs(x=expression("Area"~(um^2))) +
+  scale_y_continuous(expand=expansion(mult=c(0, 0.07))) +
+  scale_x_discrete(labels=c("AQB48-2", "Baseline-2")) +
+  labs(y=expression("Area"~(mu*m^2))) +
   theme_minimal(base_family="Noto Serif") +
   theme(
     legend.position="top",
     legend.key.size=unit(0.4, "cm"),
     legend.text=element_text(size=11, color="grey20"),
-    axis.text.x=element_text(size=11, color="grey20"),
-    axis.text.y=element_text(size=11, color="grey20"),
+    axis.text.x=element_text(size=9, color="grey20"),
+    axis.text.y=element_text(size=11, color="black"),
     axis.title.x=element_text(size=13, color="black"),
     axis.title.y=element_blank(),
-    strip.text.x=element_text(size=13, color="grey20"),
     panel.spacing=unit(0,"cm")
-  )
+  ) +
+  coord_flip()
 
-ggsave("area.pdf", width=6.5, height=1.85)
+ggsave("area.pdf", width=6.5, height=2.0)
