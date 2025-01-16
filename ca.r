@@ -100,14 +100,12 @@ data_l2_miss <- data_long_combined |>
 
 fig <- ggplot(data_l2_miss) +
   geom_col_pattern(
-    aes(x=type, y=value_norm, fill=type, pattern=type),
+    aes(x=type, y=value_norm, fill=type, pattern=type, pattern_color=type, pattern_spacing=type),
     position="stack",
     color="black",
     width=1.0,
     linewidth=0.3,
     pattern_density=0.01,
-    pattern_spacing=0.12,
-    pattern_color="#765541"
   ) +
   facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
@@ -116,7 +114,15 @@ fig <- ggplot(data_l2_miss) +
     y="Normalized Mem\nAccesses (Bytes)"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="none", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
+    guide="none"
+  ) +
+  scale_pattern_spacing_manual(
+    values=c("Baseline-2"=0.12, "AQB48-2"=0.12, "Baseline-6"=0.09, "AQB48-6"=0.12),
+    guide="none"
+  ) +
+  scale_pattern_color_manual(
+    values=c("Baseline-2"="#765541", "AQB48-2"="#765541", "Baseline-6"="#3b2e25", "AQB48-6"="#765541"),
     guide="none"
   ) +
   scale_fill_manual(
