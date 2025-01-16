@@ -37,21 +37,27 @@ data_long_combined <- bind_rows(data_long, data_long_mean) |>
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=scene, y=value, fill=category, pattern=category),
+    aes(x=scene, y=value, fill=category, pattern=category, pattern_spacing=category, pattern_color=category),
     position="dodge",
     color="black",
     width=0.8,
     linewidth=0.3,
     pattern_density=0.01,
-    pattern_spacing=0.04,
-    pattern_color="#765541"
   ) +
   labs(
     x="Scenes",
     y="Normalized Speedup"
   ) +
+  scale_pattern_spacing_manual(
+    values=c("Baseline-2"=0.06, "AQB48-2"=0.06, "Baseline-6"=0.05, "AQB48-6"=0.06),
+    guide="none"
+  ) +
+  scale_pattern_color_manual(
+    values=c("Baseline-2"="#765541", "AQB48-2"="#765541", "Baseline-6"="#3b2e25", "AQB48-6"="#765541"),
+    guide="none"
+  ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="none", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
     guide="none"
   ) +
   scale_fill_manual(
@@ -72,4 +78,4 @@ fig <- ggplot(data_long_combined) +
     strip.text.x=element_text(size=12, color="black", face="bold")
   )
 
-ggsave("perf.pdf", width=7, height=3.5)
+ggsave("perf.pdf", width=7, height=2.5)

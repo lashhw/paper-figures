@@ -118,7 +118,7 @@ fig <- ggplot(data_l2_miss) +
     guide="none"
   ) +
   scale_pattern_spacing_manual(
-    values=c("Baseline-2"=0.12, "AQB48-2"=0.12, "Baseline-6"=0.09, "AQB48-6"=0.12),
+    values=c("Baseline-2"=0.12, "AQB48-2"=0.12, "Baseline-6"=0.1, "AQB48-6"=0.12),
     guide="none"
   ) +
   scale_pattern_color_manual(
