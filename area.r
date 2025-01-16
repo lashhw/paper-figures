@@ -40,9 +40,10 @@ fig <- ggplot(data_long) +
   ) +
   geom_label(
     aes(x=unit_area, y=type, label=round(count), fill=hwunit),
-    color="grey20",
+    color="black",
     position=position_stack(vjust=0.5),
     size=3.6,
+    fontface="bold",
     label.padding=unit(0.1, "lines"),
     label.size=0,
     family="Noto Serif",
@@ -78,7 +79,7 @@ fig <- ggplot(data_long) +
     legend.text=element_text(size=11, color="grey20"),
     axis.text.x=element_text(size=11, color="grey20"),
     axis.text.y=element_text(size=11, color="grey20"),
-    axis.title.x=element_text(size=12, color="black"),
+    axis.title.x=element_text(size=13, color="black"),
     axis.title.y=element_blank(),
     strip.text.x=element_text(size=13, color="grey20"),
     panel.spacing=unit(0,"cm")

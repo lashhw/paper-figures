@@ -43,7 +43,7 @@ data_reduction <- data_long_combined |>
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=type, y=value, fill=category, pattern=type),
+    aes(x=type, y=value_normalized, fill=category, pattern=type),
     position="stack",
     color="black",
     width=0.75,
@@ -54,16 +54,16 @@ fig <- ggplot(data_long_combined) +
   ) +
   geom_text(
     data=data_reduction,
-    aes(x=2, y=y_location, label=sprintf("-%.0f%%", total*100), fill=NULL),
+    aes(x=2, y=1-total, label=sprintf("-%.0f%%", total*100), fill=NULL),
     color="grey20",
     size=3,
     family="Noto Serif",
-    vjust=-0.5,
+    vjust=-0.7,
   ) +
   facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
     x="Scenes",
-    y="Energy Consumption (nJ)",
+    y="Normalized Energy\nConsumption",
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "AQB48"="stripe"),
