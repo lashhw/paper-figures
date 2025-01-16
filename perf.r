@@ -43,7 +43,7 @@ fig <- ggplot(data_long_combined) +
     width=0.8,
     linewidth=0.3,
     pattern_density=0.01,
-    pattern_spacing=0.06,
+    pattern_spacing=0.04,
     pattern_color="#765541"
   ) +
   labs(
@@ -51,7 +51,7 @@ fig <- ggplot(data_long_combined) +
     y="Normalized Speedup"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="none", "AQB48-6"="stripe"),
+    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="none", "AQB48-6"="crosshatch"),
     guide="none"
   ) +
   scale_fill_manual(
