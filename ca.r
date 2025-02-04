@@ -4,22 +4,30 @@ library(ggpattern)
 
 data <- tribble(
      ~level, ~category,        ~type,       ~KIT,       ~BA,      ~BMW,      ~CLA,      ~HOU,      ~STR,      ~TEA,
-  "(a) L1D",     "hit", "Baseline-2", 336367950, 391836458, 342548495, 494276013, 200362442, 420286412, 280598263,
-  "(a) L1D",    "miss", "Baseline-2",  14858739,  20181052,  10513759,  36172892,   7031566,  13812596,  31405589,
-   "(b) L2",     "hit", "Baseline-2",  11777387,  14738415,   8717445,  33831909,   6475336,  12899248,  25398815,
-   "(b) L2",    "miss", "Baseline-2",   3081352,   5442637,   1796314,   2340983,    556230,    913348,   6006774,
-  "(a) L1D",     "hit",    "AQB48-2", 167123393, 187451494, 191240674, 270610515, 102587033, 205750271, 159283689,
-  "(a) L1D",    "miss",    "AQB48-2",   6385779,   9877892,   3944477,  14884634,   2562509,   5029540,  13375629,
-   "(b) L2",     "hit",    "AQB48-2",   4947829,   7373719,   3122416,  14292742,   2326889,   4614565,  11276150,
-   "(b) L2",    "miss",    "AQB48-2",   1437950,   2504173,    822061,    591892,    235620,    414975,   2099479,
-  "(a) L1D",     "hit", "Baseline-6", 302731155, 352652812, 308293646, 444848412, 180326198, 378257771, 252538437,
-  "(a) L1D",    "miss", "Baseline-6",  13372865,  18162947,   9462383,  32555603,   6328409,  12431336,  28265030,
-   "(b) L2",     "hit", "Baseline-6",  10599648,  13264574,   7845701,  30448718,   5827802,  11609323,  22858934,
-   "(b) L2",    "miss", "Baseline-6",   2773217,   4898373,   1616683,   2106885,    500607,    822013,   5406097,
-  "(a) L1D",     "hit",    "AQB48-6", 150411054, 168706345, 172116607, 243549464,  92328330, 185175244, 143355320,
-  "(a) L1D",    "miss",    "AQB48-6",   5747201,   8890103,   3550029,  13396171,   2306258,   4526586,  12038066,
-   "(b) L2",     "hit",    "AQB48-6",   4453046,   6636347,   2810174,  12863468,   2094200,   4153109,  10148535,
-   "(b) L2",    "miss",    "AQB48-6",   1294155,   2253756,    739855,    532703,    212058,    373478,   1889531,
+  "(a) L1D",     "hit", "Baseline-2", 119216632, 141211820, 119502622, 147778503,  98657812, 238145556,  42943561,
+  "(a) L1D",    "miss", "Baseline-2",    670466,    434118,    656652,    121754,    673067,   1858186,    202620,
+   "(b) L2",     "hit", "Baseline-2",    262478,    304673,    439131,     85112,    591028,   1737586,    140507,
+   "(b) L2",    "miss", "Baseline-2",    407988,    129445,    217521,     36642,     82039,    120600,     62113,
+  "(a) L1D",     "hit", "Compress-2",  76636290,  90094387,  81048494,  93439944,  64160145, 158546521,  29247997,
+  "(a) L1D",    "miss", "Compress-2",    462822,    204100,    304820,     62438,    212752,    506265,    108633,
+   "(b) L2",     "hit", "Compress-2",    148163,    105467,    143980,     37155,    153589,    415395,     61348,
+   "(b) L2",    "miss", "Compress-2",    314659,     98633,    160840,     25283,     59163,     90870,     47285,
+  "(a) L1D",     "hit",    "AQB48-2",  53040091,  63666177,  62885412,  67463571,  49269288, 101977796,  24957168,
+  "(a) L1D",    "miss",    "AQB48-2",    299412,    135373,    205983,     50967,     94207,    216521,     77226,
+   "(b) L2",     "hit",    "AQB48-2",     72362,     58719,     93488,     28743,     48697,    143766,     42036,
+   "(b) L2",    "miss",    "AQB48-2",    227050,     76654,    112495,     22224,     45510,     72755,     35190,
+  "(a) L1D",     "hit", "Baseline-6", 119216632, 141211820, 119502622, 147778503,  98657812, 238145556,  42943561,
+  "(a) L1D",    "miss", "Baseline-6",    670466,    434118,    656652,    121754,    673067,   1858186,    202620,
+   "(b) L2",     "hit", "Baseline-6",    262478,    304673,    439131,     85112,    591028,   1737586,    140507,
+   "(b) L2",    "miss", "Baseline-6",    407988,    129445,    217521,     36642,     82039,    120600,     62113,
+  "(a) L1D",     "hit", "Compress-6",  76636290,  90094387,  81048494,  93439944,  64160145, 158546521,  29247997,
+  "(a) L1D",    "miss", "Compress-6",    462822,    204100,    304820,     62438,    212752,    506265,    108633,
+   "(b) L2",     "hit", "Compress-6",    148163,    105467,    143980,     37155,    153589,    415395,     61348,
+   "(b) L2",    "miss", "Compress-6",    314659,     98633,    160840,     25283,     59163,     90870,     47285,
+  "(a) L1D",     "hit",    "AQB48-6",  53040091,  63666177,  62885412,  67463571,  49269288, 101977796,  24957168,
+  "(a) L1D",    "miss",    "AQB48-6",    299412,    135373,    205983,     50967,     94207,    216521,     77226,
+   "(b) L2",     "hit",    "AQB48-6",     72362,     58719,     93488,     28743,     48697,    143766,     42036,
+   "(b) L2",    "miss",    "AQB48-6",    227050,     76654,    112495,     22224,     45510,     72755,     35190,
 )
 
 data_long <- data |>
@@ -46,13 +54,14 @@ data_long_combined <- bind_rows(data_long, data_long_mean) |>
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=type, y=value_norm, fill=category, pattern=type, pattern_spacing=type),
+    aes(x=type, y=value_norm, fill=category, pattern=type, pattern_density=type, pattern_angle=type),
     position="stack",
     color="black",
     width=1.0,
     linewidth=0.3,
-    pattern_density=0.01,
-    pattern_color="#765541"
+    pattern_color="#765541",
+    pattern_spacing=0.05,
+    pattern_size=0.3
   ) +
   facet_grid(level~scene, switch="x", scales="free_y") +
   labs(
@@ -60,11 +69,15 @@ fig <- ggplot(data_long_combined) +
     y="Normalized Cache\nRequests (Lines)"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "Compress-6"="stripe", "AQB48-6"="crosshatch"),
     guide=guide_legend(title=NULL, order=1)
   ) +
-  scale_pattern_spacing_manual(
-    values=c("Baseline-2"=0.12, "AQB48-2"=0.12, "Baseline-6"=0.09, "AQB48-6"=0.12),
+  scale_pattern_density_manual(
+    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "Compress-6"=0.01, "AQB48-6"=0.01),
+    guide="none"
+  ) +
+  scale_pattern_angle_manual(
+    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "Compress-6"=0, "AQB48-6"=0),
     guide="none"
   ) +
   scale_fill_manual(
@@ -72,7 +85,7 @@ fig <- ggplot(data_long_combined) +
     labels=c("hit"="Cache Hit", "miss"="Cache Miss"),
     guide=guide_legend(title=NULL, order=2)
   ) +
-  scale_x_discrete(expand=expansion(mult=c(0.3, 0.3))) +
+  scale_x_discrete(expand=expansion(mult=c(0.2, 0.2))) +
   scale_y_continuous(expand=expansion(mult=c(0, 0))) +
   theme_minimal(base_family="Noto Serif") +
   theme(
@@ -81,9 +94,9 @@ fig <- ggplot(data_long_combined) +
     legend.text=element_text(size=11, color="grey20"),
     axis.text.x=element_blank(),
     axis.text.y=element_text(size=11, color="grey20"),
-    axis.title=element_text(size=16, color="black"),
+    axis.title=element_text(size=14, color="black"),
     strip.text.x=element_text(size=12, color="grey20"),
-    strip.text.y=element_text(size=16, color="black", face="bold"),
+    strip.text.y=element_text(size=14, color="black", face="bold"),
     panel.spacing.x=unit(0, "cm"),
     panel.spacing.y=unit(0.65, "cm"), 
     panel.grid.major.x = element_blank()
@@ -100,12 +113,15 @@ data_l2_miss <- data_long_combined |>
 
 fig <- ggplot(data_l2_miss) +
   geom_col_pattern(
-    aes(x=type, y=value_norm, fill=type, pattern=type, pattern_color=type, pattern_spacing=type),
+    aes(x=type, y=value_norm, pattern=type, pattern_density=type, pattern_angle=type),
     position="stack",
     color="black",
+    fill="#dccbc0",
     width=1.0,
     linewidth=0.3,
-    pattern_density=0.01,
+    pattern_spacing=0.05,
+    pattern_size=0.3,
+    pattern_color="#765541",
   ) +
   facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
@@ -114,22 +130,18 @@ fig <- ggplot(data_l2_miss) +
     y="Normalized Mem\nAccesses (Bytes)"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "Compress-6"="stripe", "AQB48-6"="crosshatch"),
     guide="none"
   ) +
-  scale_pattern_spacing_manual(
-    values=c("Baseline-2"=0.12, "AQB48-2"=0.12, "Baseline-6"=0.1, "AQB48-6"=0.12),
+  scale_pattern_density_manual(
+    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "Compress-6"=0.01, "AQB48-6"=0.01),
     guide="none"
   ) +
-  scale_pattern_color_manual(
-    values=c("Baseline-2"="#765541", "AQB48-2"="#765541", "Baseline-6"="#3b2e25", "AQB48-6"="#765541"),
+  scale_pattern_angle_manual(
+    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "Compress-6"=0, "AQB48-6"=0),
     guide="none"
   ) +
-  scale_fill_manual(
-    values=c("Baseline-2"="#e5d8d1", "AQB48-2"="#b8947f", "Baseline-6"="#765541", "AQB48-6"="#3b2e25"),
-    guide=guide_legend(title=NULL)
-  ) +
-  scale_x_discrete(expand=expansion(mult=c(0.3, 0.3))) +
+  scale_x_discrete(expand=expansion(mult=c(0.2, 0.2))) +
   scale_y_continuous(expand=expansion(mult=c(0, 0))) +
   theme_minimal(base_family="Noto Serif") +
   theme(
@@ -138,13 +150,13 @@ fig <- ggplot(data_l2_miss) +
     legend.text=element_text(size=11, color="grey20"),
     axis.text.x=element_blank(),
     axis.text.y=element_text(size=11, color="grey20"),
-    axis.title=element_text(size=16, color="black"),
+    axis.title=element_text(size=14, color="black"),
     strip.text.x=element_text(size=12, color="grey20"),
-    strip.text.y=element_text(size=16, color="black", face="bold"),
+    strip.text.y=element_text(size=12, color="black", face="bold"),
     panel.spacing.x=unit(0, "cm"),
     panel.spacing.y=unit(0.65, "cm"),
     panel.grid.major.x = element_blank(),
-    plot.title=element_text(size=16, color="black", face="bold", hjust=0.5)
+    plot.title=element_text(size=14, color="black", face="bold", hjust=0.5)
   )
 
-ggsave("traffic.pdf", width=6.9, height=2.4)
+ggsave("traffic.pdf", width=6.9, height=1.9)
