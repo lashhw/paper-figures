@@ -11,9 +11,7 @@ data <- tribble(
 
 data_long <- data |>
   pivot_longer(cols=!c(category, prec), names_to="scene", values_to="value") |>
-  group_by(category) |>
-  mutate(normalized_value=value/min(value)) |>
-  ungroup() |>
+  mutate(normalized_value=value/min(value[category=="(a) Ray-Box Intersection Test"])) |>
   mutate(
     prec=factor(prec, levels=c("FP32", "FP16")),
     scene=factor(scene, levels=unique(scene))
@@ -44,7 +42,7 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
     family="Noto Serif",
     inherit.aes=FALSE
   ) +
-  facet_wrap(~category, scales="free_y") +
+  facet_wrap(~category) +
   labs(
     x="Scenes",
     y="Normalized Operation\nCounts",
@@ -65,7 +63,11 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
     axis.text.x=element_text(size=11, color="grey20"),
     axis.text.y=element_text(size=11, color="grey20"),
     axis.title=element_text(size=16, color="black"),
-    strip.text.x=element_text(size=12, color="black", face="bold")
+    strip.text.x=element_text(size=12, color="black", face="bold"),
+    panel.spacing=unit(0,"cm"),
+    panel.grid.major.x=element_blank(),
+    panel.grid.minor.x=element_blank(),
+    panel.grid.minor.y=element_blank(),
   )
 
 ggsave("trv-steps.pdf", width=7, height=3.5)
