@@ -20,10 +20,6 @@ data <- tribble(
   "(a) L1D",    "miss", "Baseline-6",    670466,    434118,    656652,    121754,    673067,   1858186,    202620,
    "(b) L2",     "hit", "Baseline-6",    262478,    304673,    439131,     85112,    591028,   1737586,    140507,
    "(b) L2",    "miss", "Baseline-6",    407988,    129445,    217521,     36642,     82039,    120600,     62113,
-  "(a) L1D",     "hit", "Compress-6",  76636290,  90094387,  81048494,  93439944,  64160145, 158546521,  29247997,
-  "(a) L1D",    "miss", "Compress-6",    462822,    204100,    304820,     62438,    212752,    506265,    108633,
-   "(b) L2",     "hit", "Compress-6",    148163,    105467,    143980,     37155,    153589,    415395,     61348,
-   "(b) L2",    "miss", "Compress-6",    314659,     98633,    160840,     25283,     59163,     90870,     47285,
   "(a) L1D",     "hit",    "AQB48-6",  53040091,  63666177,  62885412,  67463571,  49269288, 101977796,  24957168,
   "(a) L1D",    "miss",    "AQB48-6",    299412,    135373,    205983,     50967,     94207,    216521,     77226,
    "(b) L2",     "hit",    "AQB48-6",     72362,     58719,     93488,     28743,     48697,    143766,     42036,
@@ -69,20 +65,20 @@ fig <- ggplot(data_long_combined) +
     y="Normalized Cache\nRequests (Lines)"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "Compress-6"="stripe", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
     guide=guide_legend(title=NULL, order=1)
   ) +
   scale_pattern_density_manual(
-    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "Compress-6"=0.01, "AQB48-6"=0.01),
+    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "AQB48-6"=0.01),
     guide="none"
   ) +
   scale_pattern_angle_manual(
-    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "Compress-6"=0, "AQB48-6"=0),
+    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "AQB48-6"=0),
     guide="none"
   ) +
   scale_fill_manual(
     values=c("hit"="#dccbc0", "miss"="#b8947f"),
-    labels=c("hit"="Cache Hit", "miss"="Cache Miss"),
+    labels=c("hit"="Hit", "miss"="Miss"),
     guide=guide_legend(title=NULL, order=2)
   ) +
   scale_x_discrete(expand=expansion(mult=c(0.2, 0.2))) +
@@ -102,7 +98,7 @@ fig <- ggplot(data_long_combined) +
     panel.grid.major.x = element_blank()
   )
 
-ggsave("ca.pdf", width=7.2, height=3.0)
+ggsave("ca.pdf", width=8.2, height=3.0)
 
 data_l2_miss <- data_long_combined |>
   filter(level=="(b) L2", category=="miss") |>
@@ -125,20 +121,20 @@ fig <- ggplot(data_l2_miss) +
   ) +
   facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
-    title="(c) Off-Chip Memory",
+    title="(c) DRAM",
     x="Scenes",
     y="Normalized Mem\nAccesses (Bytes)"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "Compress-6"="stripe", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
     guide="none"
   ) +
   scale_pattern_density_manual(
-    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "Compress-6"=0.01, "AQB48-6"=0.01),
+    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "AQB48-6"=0.01),
     guide="none"
   ) +
   scale_pattern_angle_manual(
-    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "Compress-6"=0, "AQB48-6"=0),
+    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "AQB48-6"=0),
     guide="none"
   ) +
   scale_x_discrete(expand=expansion(mult=c(0.2, 0.2))) +
@@ -150,7 +146,8 @@ fig <- ggplot(data_l2_miss) +
     legend.text=element_text(size=11, color="grey20"),
     axis.text.x=element_blank(),
     axis.text.y=element_text(size=11, color="grey20"),
-    axis.title=element_text(size=14, color="black"),
+    axis.title.x=element_text(size=14, color="black"),
+    axis.title.y=element_text(size=14, color="black", hjust=0.65),
     strip.text.x=element_text(size=12, color="grey20"),
     strip.text.y=element_text(size=12, color="black", face="bold"),
     panel.spacing.x=unit(0, "cm"),
@@ -159,4 +156,4 @@ fig <- ggplot(data_l2_miss) +
     plot.title=element_text(size=14, color="black", face="bold", hjust=0.5)
   )
 
-ggsave("traffic.pdf", width=6.9, height=1.9)
+ggsave("traffic.pdf", width=7.9, height=1.8)
