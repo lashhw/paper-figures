@@ -5,9 +5,10 @@ library(ggpattern)
 data <- tribble(
          ~category,   ~KIT,     ~BA,   ~BMW,   ~CLA,   ~HOU,   ~STR,   ~TEA,
   "Baseline_2_lat", 667397, 1154030, 260277, 580749, 638824, 681540, 397765,
-     "AQB48_2_lat", 542590, 1003118, 263820, 638755, 441504, 646119, 277640,
-  "Baseline_6_lat", 380660,  718649, 197263, 351789, 316186, 480063, 236456,
-     "AQB48_6_lat", 347444,  641654, 176263, 372132, 285275, 388828, 182301,
+  "Compress_2_lat", 481772,  885932, 248722, 552232, 412162, 579316, 266282,
+     "AQB48_2_lat", 290001,  512439, 152414, 316178, 232382, 348746, 154175,
+  "Baseline_6_lat", 396883,  751237, 207308, 364136, 344809, 516370, 246587,
+     "AQB48_6_lat", 314655,  558894, 153460, 316040, 251942, 331340, 168449,
 )
 
 data_long <- data |>
@@ -15,11 +16,12 @@ data_long <- data |>
   pivot_wider(names_from=category, values_from=value) |>
   mutate(
     `Baseline-2`=1,
+    `Compress-2`=Baseline_2_lat/Compress_2_lat,
     `AQB48-2`=Baseline_2_lat/AQB48_2_lat,
     `Baseline-6`=Baseline_2_lat/Baseline_6_lat,
     `AQB48-6`=Baseline_2_lat/AQB48_6_lat
   ) |>
-  select(!c(Baseline_2_lat, AQB48_2_lat, Baseline_6_lat, AQB48_6_lat)) |>
+  select(!c(Baseline_2_lat, Compress_2_lat, AQB48_2_lat, Baseline_6_lat, AQB48_6_lat)) |>
   print()
 
 data_long_mean <- data_long |>
@@ -37,31 +39,31 @@ data_long_combined <- bind_rows(data_long, data_long_mean) |>
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=scene, y=value, fill=category, pattern=category, pattern_spacing=category, pattern_color=category),
+    aes(x=scene, y=value, fill=category, pattern=category, pattern_angle=category, pattern_density=category),
     position="dodge",
     color="black",
     width=0.8,
     linewidth=0.3,
-    pattern_density=0.01,
+    pattern_color="#765541",
   ) +
   labs(
     x="Scenes",
-    y="Normalized Speedup"
-  ) +
-  scale_pattern_spacing_manual(
-    values=c("Baseline-2"=0.06, "AQB48-2"=0.06, "Baseline-6"=0.05, "AQB48-6"=0.06),
-    guide="none"
-  ) +
-  scale_pattern_color_manual(
-    values=c("Baseline-2"="#765541", "AQB48-2"="#765541", "Baseline-6"="#3b2e25", "AQB48-6"="#765541"),
-    guide="none"
+    y="Normalized\nSpeedup"
   ) +
   scale_pattern_manual(
-    values=c("Baseline-2"="none", "AQB48-2"="stripe", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
+    guide="none"
+  ) +
+  scale_pattern_angle_manual(
+    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "AQB48-6"=0),
+    guide="none"
+  ) +
+  scale_pattern_density_manual(
+    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "AQB48-6"=0.01),
     guide="none"
   ) +
   scale_fill_manual(
-    values=c("Baseline-2"="#e5d8d1", "AQB48-2"="#b8947f", "Baseline-6"="#765541", "AQB48-6"="#3b2e25"),
+    values=c("Baseline-2"="#dccbc0", "Compress-2"="#cab09f", "AQB48-2"="#b8947f", "Baseline-6"="#a6795e", "AQB48-6"="#8d5d3e"),
     guide=guide_legend(title=NULL)
   ) +
   scale_y_continuous(
@@ -75,7 +77,8 @@ fig <- ggplot(data_long_combined) +
     axis.text.x=element_text(size=11, color="grey20"),
     axis.text.y=element_text(size=11, color="grey20"),
     axis.title=element_text(size=16, color="black"),
-    strip.text.x=element_text(size=12, color="black", face="bold")
+    strip.text.x=element_text(size=12, color="black", face="bold"),
+    panel.grid.major.x = element_blank()
   )
 
-ggsave("perf.pdf", width=7, height=2.5)
+ggsave("perf.pdf", width=7, height=2)
