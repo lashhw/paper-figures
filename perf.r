@@ -26,7 +26,7 @@ data_long <- data |>
 
 data_long_mean <- data_long |>
   summarise(across(!scene, ~exp(mean(log(.)))), .groups="drop") |>
-  mutate(scene="MEAN") |>
+  mutate(scene="GMEAN") |>
   print()
 
 data_long_combined <- bind_rows(data_long, data_long_mean) |>
