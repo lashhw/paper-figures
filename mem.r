@@ -3,10 +3,10 @@ library(extrafont)
 
 data <- tribble(
    ~category,                                ~type,      ~KIT,       ~BA,      ~BMW,       ~CLA,      ~HOU,      ~STR,      ~TEA,
-       "nbp",        "(a) L1D Accesses (In Bytes)", 811278416, 955359350, 734093258, 1245992706, 439372298, 897508091, 663389863,
-  "Triangle",        "(a) L1D Accesses (In Bytes)", 137632025, 164605296, 271490642,  183551714, 104263447, 274059931, 238551654,
-       "nbp", "(b) DRAM Accesses (In Cache Lines)",   2369544,   3908831,   1263463,    1451032,    387877,    553699,   3973370,
-  "Triangle", "(b) DRAM Accesses (In Cache Lines)",    756439,   1555584,    541289,     903982,    177387,    363432,   1907147,
+       "nbp",  "(a) L1D Accesses (In Bytes)", 811278416, 955359350, 734093258, 1245992706, 439372298, 897508091, 663389863,
+  "Triangle",  "(a) L1D Accesses (In Bytes)", 137632025, 164605296, 271490642,  183551714, 104263447, 274059931, 238551654,
+       "nbp", "(b) DRAM Accesses (In Bytes)",   9346805,  18762162,   4123101,   15521381,   7287076,  16514498,   3726486,
+  "Triangle", "(b) DRAM Accesses (In Bytes)",   2816855,   4280016,   1190047,    3277803,   1634399,   4650686,   1094488,
 )
 
 data_long <- data |>
@@ -16,13 +16,20 @@ nbp_data <- data_long |>
   filter(category == "nbp")
 
 triangle_data <- data_long |>
-  filter(category == "Triangle")
+  filter(category == "Triangle") |>
+  mutate(value=ifelse(grepl("DRAM", type), value*36, value))
 
 bb_data <- nbp_data |>
-  mutate(category="Bounding Box", value=value*(48/56))
+  mutate(
+    category="Bounding Box",
+    value=ifelse(grepl("DRAM", type), value*48, value*(48/56))
+  )
 
 node_data <- nbp_data |>
-  mutate(category="Other", value=value*(8/56))
+  mutate(
+    category="Other",
+    value=ifelse(grepl("DRAM", type), value*8, value*(8/56))
+  )
 
 data_long <- bind_rows(triangle_data, bb_data, node_data) |>
   group_by(scene, type) |>
