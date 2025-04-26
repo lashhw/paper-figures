@@ -2,11 +2,13 @@ library(tidyverse)
 library(extrafont)
 
 data <- tribble(
-   ~category,                                ~type,      ~KIT,       ~BA,      ~BMW,       ~CLA,      ~HOU,      ~STR,      ~TEA,
+   ~category,                          ~type,      ~KIT,       ~BA,      ~BMW,       ~CLA,      ~HOU,      ~STR,      ~TEA,
        "nbp",  "(a) L1D Accesses (In Bytes)", 811278416, 955359350, 734093258, 1245992706, 439372298, 897508091, 663389863,
   "Triangle",  "(a) L1D Accesses (In Bytes)", 137632025, 164605296, 271490642,  183551714, 104263447, 274059931, 238551654,
-       "nbp", "(b) DRAM Accesses (In Bytes)",   9346805,  18762162,   4123101,   15521381,   7287076,  16514498,   3726486,
-  "Triangle", "(b) DRAM Accesses (In Bytes)",   2816855,   4280016,   1190047,    3277803,   1634399,   4650686,   1094488,
+  "prim_inx",  "(a) L1D Accesses (In Bytes)",         0,         0,         0,          0,         0,         0,         0,
+       "nbp", "(b) DRAM Accesses (In Bytes)",  12869367,  18784942,   4578530,   18605656,   9083478,  20103798,   5450680,
+  "Triangle", "(b) DRAM Accesses (In Bytes)",   2996350,   3078260,   1325845,    2602306,   2017782,   4850730,   1350989,
+  "prim_inx", "(b) DRAM Accesses (In Bytes)",   1832978,   1682079,    772585,    1393751,   1233747,   3133155,    801709,
 )
 
 data_long <- data |>
@@ -19,6 +21,10 @@ triangle_data <- data_long |>
   filter(category == "Triangle") |>
   mutate(value=ifelse(grepl("DRAM", type), value*36, value))
 
+prim_idx_data <- data_long |>
+  filter(category == "prim_inx") |>
+  mutate(value=value*8)
+
 bb_data <- nbp_data |>
   mutate(
     category="Bounding Box",
@@ -30,6 +36,11 @@ node_data <- nbp_data |>
     category="Other",
     value=ifelse(grepl("DRAM", type), value*8, value*(8/56))
   )
+
+node_data <- node_data |>
+  left_join(prim_idx_data |> select(type, scene, prim_value=value), by=c("type", "scene")) |>
+  mutate(value = value + prim_value) |>
+  select(-prim_value)
 
 data_long <- bind_rows(triangle_data, bb_data, node_data) |>
   group_by(scene, type) |>
