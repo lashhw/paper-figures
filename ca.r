@@ -3,85 +3,104 @@ library(extrafont)
 library(ggpattern)
 
 data <- tribble(
-     ~level, ~category,        ~type,       ~KIT,       ~BA,      ~BMW,      ~CLA,      ~HOU,      ~STR,      ~TEA,
-  "(a) L1D",     "hit", "Baseline-2", 119216632, 141211820, 119502622, 147778503,  98657812, 238145556,  42943561,
-  "(a) L1D",    "miss", "Baseline-2",    670466,    434118,    656652,    121754,    673067,   1858186,    202620,
-   "(b) L2",     "hit", "Baseline-2",    262478,    304673,    439131,     85112,    591028,   1737586,    140507,
-   "(b) L2",    "miss", "Baseline-2",    407988,    129445,    217521,     36642,     82039,    120600,     62113,
-  "(a) L1D",     "hit", "Compress-2",  76636290,  90094387,  81048494,  93439944,  64160145, 158546521,  29247997,
-  "(a) L1D",    "miss", "Compress-2",    462822,    204100,    304820,     62438,    212752,    506265,    108633,
-   "(b) L2",     "hit", "Compress-2",    148163,    105467,    143980,     37155,    153589,    415395,     61348,
-   "(b) L2",    "miss", "Compress-2",    314659,     98633,    160840,     25283,     59163,     90870,     47285,
-  "(a) L1D",     "hit",    "AQB48-2",  53040091,  63666177,  62885412,  67463571,  49269288, 101977796,  24957168,
-  "(a) L1D",    "miss",    "AQB48-2",    299412,    135373,    205983,     50967,     94207,    216521,     77226,
-   "(b) L2",     "hit",    "AQB48-2",     72362,     58719,     93488,     28743,     48697,    143766,     42036,
-   "(b) L2",    "miss",    "AQB48-2",    227050,     76654,    112495,     22224,     45510,     72755,     35190,
-  "(a) L1D",     "hit", "Baseline-6", 119216632, 141211820, 119502622, 147778503,  98657812, 238145556,  42943561,
-  "(a) L1D",    "miss", "Baseline-6",    670466,    434118,    656652,    121754,    673067,   1858186,    202620,
-   "(b) L2",     "hit", "Baseline-6",    262478,    304673,    439131,     85112,    591028,   1737586,    140507,
-   "(b) L2",    "miss", "Baseline-6",    407988,    129445,    217521,     36642,     82039,    120600,     62113,
-  "(a) L1D",     "hit",    "AQB48-6",  53040091,  63666177,  62885412,  67463571,  49269288, 101977796,  24957168,
-  "(a) L1D",    "miss",    "AQB48-6",    299412,    135373,    205983,     50967,     94207,    216521,     77226,
-   "(b) L2",     "hit",    "AQB48-6",     72362,     58719,     93488,     28743,     48697,    143766,     42036,
-   "(b) L2",    "miss",    "AQB48-6",    227050,     76654,    112495,     22224,     45510,     72755,     35190,
+     ~level, ~category,      ~type, ~branch,     ~KIT,      ~BA,    ~BMW,     ~CLA,     ~HOU,     ~STR,    ~TEA,
+  "(a) L1D",     "hit", "Baseline",     "2", 11544920, 22609530, 6351504, 21444156, 14234249, 36961640, 5901311,
+  "(a) L1D",    "miss", "Baseline",     "2",  1224004,  3884442,  923760,  2396496,  1242079,  1847237,  767248,
+   "(b) L2",     "hit", "Baseline",     "2",   945115,  2634326,  571442,  2249737,   991496,  1665698,  565686,
+   "(b) L2",    "miss", "Baseline",     "2",   278889,  1250116,  352318,   146759,   250583,   181539,  201562,
+  "(a) L1D",     "hit", "Compress",     "2",  4421333,  9040115, 2538406,  7317367,  5339704, 16283592, 2078955,
+  "(a) L1D",    "miss", "Compress",     "2",   798787,  2488756,  624560,  1449974,   800869,  1103333,  513884,
+   "(b) L2",     "hit", "Compress",     "2",   625985,  1710898,  414297,  1381383,   656017,   982871,  400510,
+   "(b) L2",    "miss", "Compress",     "2",   172802,   777858,  210263,    68591,   144852,   120462,  113374,
+  "(a) L1D",     "hit",     "AQB8",     "2",  3658981,  6680804, 1587135,  6627819,  3151786, 12763490, 1463804,
+  "(a) L1D",    "miss",     "AQB8",     "2",   387349,  1316959,  340811,   767106,   468041,   722417,  268170,
+   "(b) L2",     "hit",     "AQB8",     "2",   310050,   957797,  248104,   732406,   405394,   658801,  216289,
+   "(b) L2",    "miss",     "AQB8",     "2",    77299,   359162,   92707,    34700,    62647,    63616,   51881,
+  "(a) L1D",     "hit", "Baseline",     "6", 16605267, 24336271, 7104081, 32604866, 18707887, 27577148, 9531879,
+  "(a) L1D",    "miss", "Baseline",     "6",  1243709,  3913363,  801546,  2074369,  1232605,  1479162,  803992,
+   "(b) L2",     "hit", "Baseline",     "6",   913557,  2526773,  497811,  1923560,   971830,  1286790,  554429,
+   "(b) L2",    "miss", "Baseline",     "6",   330152,  1386590,  303735,   150809,   260775,   192372,  249563,
+  "(a) L1D",     "hit", "Compress",     "6",  4409864,  7709472, 1843487,  7263645,  5003490,  9130007, 2275491,
+  "(a) L1D",    "miss", "Compress",     "6",   545908,  1826403,  418916,   919709,   592006,   778792,  428445,
+   "(b) L2",     "hit", "Compress",     "6",   390151,  1132238,  275658,   862392,   473065,   667787,  306983,
+   "(b) L2",    "miss", "Compress",     "6",   155757,   694165,  143258,    57317,   118941,   111005,  121462,
+  "(a) L1D",     "hit",     "AQB8",     "6",  3293867,  5949092, 1369693,  6330556,  3238714,  8516754, 1456574,
+  "(a) L1D",    "miss",     "AQB8",     "6",   538664,  1580245,  366993,  1012432,   562904,   766265,  354157,
+   "(b) L2",     "hit",     "AQB8",     "6",   428760,  1101807,  275836,   971139,   481647,   690928,  275318,
+   "(b) L2",    "miss",     "AQB8",     "6",   109904,   478438,   91157,    41293,    81257,    75337,   78839,
 )
 
 data_long <- data |>
-  pivot_longer(cols=-c(level, category, type), names_to="scene", values_to="value") |>
-  group_by(level, scene) |>
-  mutate(value_norm=value/sum(value[type=="Baseline-2"])) |>
+  pivot_longer(cols=-c(level, category, type, branch), names_to="scene", values_to="value") |>
+  group_by(level, branch, scene) |>
+  mutate(value_norm=value/sum(value[type=="Baseline"])) |>
+  ungroup() |>
+  select(-value) |>
   print()
 
 data_long_mean <- data_long |>
-  group_by(level, category, type) |>
+  group_by(level, category, type, branch) |>
   summarise(value_norm=mean(value_norm), .groups="drop") |>
   mutate(scene="MEAN") |>
   print()
 
 data_long_combined <- bind_rows(data_long, data_long_mean) |>
+  unite(type_branch, type, branch, sep="-", remove=FALSE) |>
   mutate(
     level=factor(level, levels=unique(level)),
     category=factor(category, levels=unique(category)),
-    type=factor(type, levels=unique(type)),
+    type_branch=factor(type_branch, levels=c("Baseline-2", "Compress-2", "AQB8-2", " ", "Baseline-6", "Compress-6", "AQB8-6")),
     scene=factor(scene, levels=c("KIT", "BA", "BMW", "CLA", "HOU", "STR", "TEA", "MEAN"))
   ) |>
-  select(-value) |>
   print()
 
 fig <- ggplot(data_long_combined) +
   geom_col_pattern(
-    aes(x=type, y=value_norm, fill=category, pattern=type, pattern_density=type, pattern_angle=type),
+    aes(x=type_branch, y=value_norm, fill=interaction(category, branch), pattern=type_branch, pattern_angle=branch, pattern_color=branch, pattern_size=type_branch),
     position="stack",
     color="black",
     width=1.0,
     linewidth=0.3,
-    pattern_color="#765541",
-    pattern_spacing=0.05,
-    pattern_size=0.3
+    pattern_density=0.001,
+    pattern_spacing=0.05
   ) +
   facet_grid(level~scene, switch="x", scales="free_y") +
   labs(
     x="Scenes",
-    y="Normalized Cache\nRequests (Lines)"
-  ) +
-  scale_pattern_manual(
-    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
-    guide=guide_legend(title=NULL, order=1)
-  ) +
-  scale_pattern_density_manual(
-    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "AQB48-6"=0.01),
-    guide="none"
-  ) +
-  scale_pattern_angle_manual(
-    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "AQB48-6"=0),
-    guide="none"
+    y="Normalized Cache\nRequests (Bytes)"
   ) +
   scale_fill_manual(
-    values=c("hit"="#dccbc0", "miss"="#b8947f"),
-    labels=c("hit"="Hit", "miss"="Miss"),
+    values = c(
+      "hit.2"="#d3bdb0",
+      "miss.2"="#976c54",
+      "hit.6"="#b0d3cf",
+      "miss.6"="#54978f"
+    ),
+    labels = c(
+      "hit.2" = "Hit",
+      "miss.2" = "Miss",
+      "hit.6" = "Hit-6",
+      "miss.6" = "Miss-6"
+    ),
     guide=guide_legend(title=NULL, order=2)
   ) +
-  scale_x_discrete(expand=expansion(mult=c(0.2, 0.2))) +
+  scale_pattern_manual(
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB8-2"="crosshatch", "Baseline-6"="circle", "Compress-6"="stripe", "AQB8-6"="crosshatch"),
+    guide=guide_legend(title=NULL, order=1)
+  ) +
+  scale_pattern_angle_manual(
+    values=c("2"=30, "6"=0),
+    guide="none"
+  ) +
+  scale_pattern_color_manual(
+    values=c("2"="#664939", "6"="#396660"),
+    guide="none"
+  ) +
+  scale_pattern_size_manual(
+    values=c("Baseline-2"=0.15, "Compress-2"=0.15, "AQB8-2"=0.15, "Baseline-6"=0.3, "Compress-6"=0.15, "AQB8-6"=0.15),
+    guide="none"
+  ) +
+  scale_x_discrete(expand=expansion(mult=c(0.1, 0.1)), drop=FALSE) +
   scale_y_continuous(expand=expansion(mult=c(0, 0))) +
   theme_minimal(base_family="Noto Serif") +
   theme(
@@ -98,26 +117,24 @@ fig <- ggplot(data_long_combined) +
     panel.grid.major.x = element_blank()
   )
 
-ggsave("ca.pdf", width=8.2, height=3.0)
+ggsave("ca.pdf", width=7, height=3.0)
 
 data_l2_miss <- data_long_combined |>
   filter(level=="(b) L2", category=="miss") |>
   select(-level, -category) |>
   group_by(scene) |>
-  mutate(value_norm=value_norm/value_norm[type=="Baseline-2"]) |>
+  mutate(value_norm=value_norm/value_norm[type=="Baseline"]) |>
   print()
 
 fig <- ggplot(data_l2_miss) +
   geom_col_pattern(
-    aes(x=type, y=value_norm, pattern=type, pattern_density=type, pattern_angle=type),
+    aes(x=type_branch, y=value_norm, fill=branch, pattern=type_branch, pattern_angle=branch, pattern_color=branch, pattern_size=type_branch),
     position="stack",
     color="black",
-    fill="#dccbc0",
     width=1.0,
     linewidth=0.3,
-    pattern_spacing=0.05,
-    pattern_size=0.3,
-    pattern_color="#765541",
+    pattern_density=0.001,
+    pattern_spacing=0.05
   ) +
   facet_wrap(~scene, nrow=1, strip.position="bottom") +
   labs(
@@ -125,19 +142,27 @@ fig <- ggplot(data_l2_miss) +
     x="Scenes",
     y="Normalized Mem\nAccesses (Bytes)"
   ) +
-  scale_pattern_manual(
-    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB48-2"="crosshatch", "Baseline-6"="circle", "AQB48-6"="crosshatch"),
+  scale_fill_manual(
+    values=c("2"="#d3bdb0", "6"="#b0d3cf"),
     guide="none"
   ) +
-  scale_pattern_density_manual(
-    values=c("Baseline-2"=0.01, "Compress-2"=0.01, "AQB48-2"=0.01, "Baseline-6"=0.1, "AQB48-6"=0.01),
+  scale_pattern_manual(
+    values=c("Baseline-2"="none", "Compress-2"="stripe", "AQB8-2"="crosshatch", "Baseline-6"="circle", "Compress-6"="stripe", "AQB8-6"="crosshatch"),
     guide="none"
   ) +
   scale_pattern_angle_manual(
-    values=c("Baseline-2"=0, "Compress-2"=30, "AQB48-2"=30, "Baseline-6"=30, "AQB48-6"=0),
+    values=c("2"=30, "6"=0),
     guide="none"
   ) +
-  scale_x_discrete(expand=expansion(mult=c(0.2, 0.2))) +
+  scale_pattern_color_manual(
+    values=c("2"="#664939", "6"="#396660"),
+    guide="none"
+  ) +
+  scale_pattern_size_manual(
+    values=c("Baseline-2"=0.15, "Compress-2"=0.15, "AQB8-2"=0.15, "Baseline-6"=0.3, "Compress-6"=0.15, "AQB8-6"=0.15),
+    guide="none"
+  ) +
+  scale_x_discrete(expand=expansion(mult=c(0.1, 0.1)), drop=FALSE) +
   scale_y_continuous(expand=expansion(mult=c(0, 0))) +
   theme_minimal(base_family="Noto Serif") +
   theme(
@@ -156,4 +181,4 @@ fig <- ggplot(data_l2_miss) +
     plot.title=element_text(size=14, color="black", face="bold", hjust=0.5)
   )
 
-ggsave("traffic.pdf", width=7.9, height=1.8)
+ggsave("traffic.pdf", width=6.656, height=1.65)
