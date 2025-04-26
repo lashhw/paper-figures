@@ -122,8 +122,9 @@ ggsave("ca.pdf", width=7, height=3.0)
 data_l2_miss <- data_long_combined |>
   filter(level=="(b) L2", category=="miss") |>
   select(-level, -category) |>
-  group_by(scene) |>
+  group_by(branch, scene) |>
   mutate(value_norm=value_norm/value_norm[type=="Baseline"]) |>
+  ungroup() |>
   print()
 
 fig <- ggplot(data_l2_miss) +
