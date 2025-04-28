@@ -45,7 +45,7 @@ fig <- ggplot(data_long, aes(x=scene, y=normalized_value, fill=prec)) +
   facet_wrap(~category) +
   labs(
     x="Scenes",
-    y="Normalized\nOperation Counts",
+    y="Normalized BVH\nTraversal Steps",
     fill="Precisions"
   ) +
   scale_fill_manual(

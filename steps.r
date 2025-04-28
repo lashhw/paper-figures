@@ -47,7 +47,7 @@ fig <- ggplot(data_long_combined) +
   facet_wrap(~category) +
   labs(
     x="Scenes",
-    y="Normalized\nOperation Counts"
+    y="Normalized BVH\nTraversal Steps",
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "Compress"="stripe", "AQB48"="crosshatch"),
@@ -55,7 +55,7 @@ fig <- ggplot(data_long_combined) +
   ) +
   scale_fill_manual(
     values=c("Baseline"="#dccbc0", "Compress"="#b8947f", "AQB48"="#a6795e"),
-    labels=c("Baseline"="Baseline-2", "Compress"="Compress-2", "AQB48"="AQB48-2"),
+    labels=c("Baseline"="Baseline-2", "Compress"="Compress-2", "AQB48"="AQB8-2"),
     guide=guide_legend(title=NULL)
   ) +
   theme_minimal(base_family="Noto Serif") +
