@@ -47,7 +47,7 @@ fig <- ggplot(data_long_combined) +
   facet_wrap(~category) +
   labs(
     x="Scenes",
-    y="Normalized BVH\nTraversal Steps",
+    y="Normalized\nTest Counts",
   ) +
   scale_pattern_manual(
     values=c("Baseline"="none", "Compress"="stripe", "AQB48"="crosshatch"),
