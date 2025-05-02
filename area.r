@@ -65,8 +65,7 @@ fig <- ggplot(data_long) +
     data=data_increment,
     aes(x=type, y=total_area, label=sprintf("%+.0f%%", ratio*100)),
     color="grey20",
-    vjust=-0.9,
-    angle=-90,
+    hjust=-0.1,
     size=3.4,
     fontface="bold",
     family="Noto Serif"
@@ -85,7 +84,7 @@ fig <- ggplot(data_long) +
     breaks=c("TRV", "QBOX", "BOX", "TRIG", "OTHER")
   ) +
   scale_y_continuous(expand=expansion(mult=c(0, 0.07))) +
-  scale_x_discrete(labels=c("AQB48-2", "Compress-2", "Baseline-2")) +
+  scale_x_discrete(labels=c("AQB8-2", "Compress-2", "Baseline-2")) +
   labs(y=expression("Area"~(mu*m^2))) +
   theme_minimal(base_family="Noto Serif") +
   theme(
@@ -99,4 +98,4 @@ fig <- ggplot(data_long) +
   ) +
   coord_flip()
 
-ggsave("area.pdf", width=6.5, height=2.3)
+ggsave("area.pdf", width=6.5, height=2)
